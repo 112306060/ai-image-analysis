@@ -1,14 +1,20 @@
 # AI Image Analysis
 
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
+![Computer Vision](https://img.shields.io/badge/Computer%20Vision-4F46E5?style=flat)
+![ResNet18](https://img.shields.io/badge/ResNet18-grey?style=flat)
+
 A full-stack computer vision application built with React, FastAPI, PyTorch and ResNet18. The system allows users to upload images, performs deep-learning inference through a REST API, and displays ranked predictions with confidence scores.
+
+**Built an end-to-end image classification system using PyTorch, ResNet18, FastAPI, React, and SQLite; improved test accuracy from 75.5% to 88.7% through fine-tuning, class-weighted loss, and data augmentation.**
+
+![Confident case](docs/screenshots/confident-case.jpg)
 
 The model classifies an uploaded image into one of six recyclable material categories — **cardboard, glass, metal, paper, plastic, trash** — trained on the [TrashNet](https://github.com/garythung/trashnet) dataset using transfer learning on ResNet18.
 
 ## Screenshots
-
-**Confident, correct prediction** — a clear glass flask, correctly classified as glass with high confidence:
-
-![Confident case](docs/screenshots/confident-case.jpg)
 
 **Low-confidence prediction, surfaced explicitly to the user** — a glass decanter with a highly reflective metallic-looking cap, where the model is genuinely torn between two classes. See [Model Performance & Error Analysis](#model-performance--error-analysis) for the full discussion.
 
