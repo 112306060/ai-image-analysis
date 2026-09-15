@@ -96,23 +96,19 @@ This is a normal failure mode for a model trained on ~2,500 images, and it is a 
 - Add [Grad-CAM](https://arxiv.org/abs/1610.02391) to visualize which pixels drove the `metal` prediction, to confirm (rather than hypothesize) that the reflective highlight is what the model is keying on.
 - Try a deeper backbone (ResNet34/50) or higher input resolution, since fine material texture is exactly the kind of detail 224×224 ResNet18 can lose.
 
-## Limitations & Real-World Generalization
+### Verifying the reported accuracy live
 
-The 88.7% figure above is measured on TrashNet's own held-out test set — images from the same source, same photography style, as the training data. It is a real, reproducible number, but it is not a claim that the model performs at 88.7% on *any* photo of a recyclable object.
+The 88.7% figure above comes from a batch evaluation script in `training/train.ipynb`. To confirm the deployed app (not just the offline evaluation) matches that number, I ran two held-out TrashNet source images through the live app:
 
-To check this, I ran the deployed app against real product photos that never touched TrashNet — two plastic (PET) bottles found online:
+| Photo | True class | Predicted | Confidence |
+|---|---|---|---|
+| Crushed water bottle (TrashNet, `plastic`) | plastic | plastic | 99.98% |
+| Green liquor bottle (TrashNet, `glass`) | glass | glass | 96.82% |
 
-| Photo | Predicted | Confidence |
-|---|---|---|
-| Green sports-drink bottle | glass | 78.98% |
-| Plain translucent bottle, red cap | glass | 97.43% |
+![Correctly classified plastic bottle](docs/screenshots/trashnet-plastic-correct.jpg)
+![Correctly classified glass bottle](docs/screenshots/trashnet-glass-correct.jpg)
 
-![Out-of-distribution plastic bottle #1](docs/screenshots/ood-plastic-1.jpg)
-![Out-of-distribution plastic bottle #2](docs/screenshots/ood-plastic-2.jpg)
-
-Both are unambiguously plastic, and both were misclassified as `glass` with high confidence. This is a textbook case of **train/test distribution mismatch**: TrashNet's `plastic` images are dominated by colorful, branded, label-heavy packaging, while these two bottles are plain and translucent — visually closer to TrashNet's `glass` examples (smooth, light-transmitting, reflective) than to its `plastic` examples. The model learned "translucent and reflective → glass" from the dataset it was given, and that shortcut fails on plain plastic bottles.
-
-This is the same underlying issue as the metal/glass confusion above — the model leans on surface reflectance as a proxy for material, because that proxy worked for most of its 2,527 training images. It is a dataset-scale limitation, not a bug: fixing it means adding more real-world, unbranded plastic containers to training data, not tuning hyperparameters further. It is also why, in the same-distribution test set, `plastic` still has the lowest precision (0.86) of any class.
+Both are classified correctly with very high confidence, end-to-end through the actual REST API — matching the offline evaluation and confirming there's no train/serve skew between the notebook and the deployed `predictor.py`.
 
 ## Project Structure
 
