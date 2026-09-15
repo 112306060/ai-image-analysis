@@ -1,0 +1,35 @@
+.app {
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 24px;
+}
+
+.navbar-links a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 4px;
+}
+
+.navbar-links a.active {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
